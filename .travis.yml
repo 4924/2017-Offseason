@@ -6,4 +6,4 @@ notifications:
 install:
   - "pip install -r tests/text-r.txt"
 script:
-- "python robot.py test"
+- "python robot/robot.py test"
