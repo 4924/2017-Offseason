@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 import wpilib
 from networktables import NetworkTables
-from comms.commObject import Comm
+from comms.com import Comm
 from actions.drive import Drive
 from actions.arm import Arm
 from sensors.ultrasonic import Ultrasconic_Sensor
-from sensor.switch import Switch
-from control.toggle import Toggle 
+from sensors.switch import Switch
+from control.toggle import Toggle
+from control.bool import Logic
 
 class MyRobot(wpilib.IterativeRobot):
     def robotInit(self):
