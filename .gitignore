@@ -1,0 +1,7 @@
+#frcpy
+.deploy_cfg
+
+#linux
+.directory
+
+__pycache__/
