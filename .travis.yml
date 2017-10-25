@@ -7,3 +7,4 @@ install:
   - "pip install -r tests/text-r.txt"
 script:
 - "python robot/robot.py test"
+_ "pycodestyle --first robot/robot.py"

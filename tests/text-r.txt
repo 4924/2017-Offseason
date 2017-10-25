@@ -1,5 +1,4 @@
 pytest>=2.8
 pyfrc
 wpilib
-robotpy-ctre
-pep8 
+pycodestyle 
