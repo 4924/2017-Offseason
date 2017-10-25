@@ -4,6 +4,6 @@ python:
 notifications:
   email: false
 install:
-  - "pip install -r tests/testing-r.txt"
+  - "pip install -r tests/text-r.txt"
 script:
 - "python robot.py test"
