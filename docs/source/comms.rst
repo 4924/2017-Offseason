@@ -3,21 +3,18 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to 2017-Offseason's documentation!
+Comms
 ==========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   
-   control
-   actions
-   comms
-   sensors
-   
 
-Indices and tables
-==================
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. automodule:: comms
+ 
+.. autoclass:: Comm
+    :members:
+    
+    .. automethod:: __init__
+    
+    

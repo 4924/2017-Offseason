@@ -3,7 +3,7 @@ import wpilib
 from networktables import NetworkTables
 from comms import Comm
 from actions import Drive
-from actions import Arm
+from actions import Mandible
 from sensors import Ultrasonic
 from sensors import Switch
 from control import Toggle

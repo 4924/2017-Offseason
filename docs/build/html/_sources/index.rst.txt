@@ -9,12 +9,15 @@ Welcome to 2017-Offseason's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-
+   
+   control
+   actions
+   comms
+   sensors
+   
 
 Indices and tables
 ==================
-
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
