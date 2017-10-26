@@ -40,9 +40,29 @@
             
   <h1>Source code for actions</h1><div class="highlight"><pre>
 <div class="viewcode-block" id="Drive"><a class="viewcode-back" href="../actions.html#actions.Drive">[docs]</a><span></span><span class="k">class</span> <span class="nc">Drive</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">_init_</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">_init_</span><span class="p">(</span><span class="n">drive</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct an instance of a Drive.</span>
+
+<span class="sd">        :type  drive: wpilib.RobotDrive</span>
+<span class="sd">        :param drive: The drive base to use.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Drive.move"><a class="viewcode-back" href="../actions.html#actions.Drive.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the movement for the robot.</span>
+
+<span class="sd">        :type  x: int</span>
+<span class="sd">        :param x: The x value to move.</span>
+<span class="sd">        :type  y: int</span>
+<span class="sd">        :param y: The x value to move.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
-    <span class="c1">#.move</span>
+
+<div class="viewcode-block" id="Drive.update"><a class="viewcode-back" href="../actions.html#actions.Drive.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Update the motors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
 
 <div class="viewcode-block" id="Mandible"><a class="viewcode-back" href="../actions.html#actions.Mandible">[docs]</a><span class="k">class</span> <span class="nc">Mandible</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">_inti_</span><span class="p">():</span>
