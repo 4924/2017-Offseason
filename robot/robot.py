@@ -17,6 +17,7 @@ class MyRobot(wpilib.IterativeRobot):
         """
         self.table = NetworkTables.getTable("SmartDashboard")
         self.robot_drive = wpilib.RobotDrive(0,1)
+        self.drive_base = Drive(self.robot_drive)
         self.stick = wpilib.Joystick(0)
         self.climbingMotor = wpilib.Talon(2)
         self.gearSwitch1 = wpilib.DigitalInput(0)
@@ -58,7 +59,8 @@ class MyRobot(wpilib.IterativeRobot):
         elif self.stick.getRawButton(9):
             self.robot_drive.arcadeDrive(-1*self.stick.getY(),-1*self.stick.getX())
         else:
-            self.robot_drive.arcadeDrive(-0.75*self.stick.getY(),-0.75*self.stick.getX())
+            self.drive_base.move(-0.75*self.stick.getY(),-0.75*self.stick.getX())
+            
 
 
 
@@ -116,6 +118,9 @@ class MyRobot(wpilib.IterativeRobot):
         self.table.putNumber('GearMotor1 Reverse', self.gearMotor1.get())
         self.table.putNumber('GearMotor2 Reverse', self.gearMotor2.get())
         self.table.putNumber('gyro', self.gyro.getAngle())
+        
+        self.drive_base.update()
+        #Other updates
 
     def testPeriodic(self):
         """This function is called periodically during test mode."""
