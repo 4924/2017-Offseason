@@ -1,5 +1,5 @@
 class Toggle:
-    def _init_(self, function):
+    def __init__(self, function):
         """Construct an instance of a Toggle object.
 
         :type  function: function
@@ -9,22 +9,29 @@ class Toggle:
         self.prevOn = False
         self.prevOff = True
 
+    def check(self):
+        return self.function()
+
     @property
     def on(self):
         vfunc = self.function()
-        if vfunc and !self.prevOn:
+        if vfunc and not self.prevOn:
+            self.prevOn = vfunc
             return True
         else:
+            self.prevOn = vfunc
             return False
-        self.prevOn = vfunc
 
     @property
     def off(self):
         vfunc = self.function()
-        if !vfunc and self.prevOff:
+        if not vfunc and self.prevOff:
+            self.prevOff = vfunc
             return True
         else:
+            self.prevOff = vfunc
             return False
-        self.prevOff = vfunc
+
+    __bool__ = check
 
 
