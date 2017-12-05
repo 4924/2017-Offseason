@@ -20,14 +20,10 @@ class MyRobot(wpilib.IterativeRobot):
         self.drive_base = Drive(self.robot_drive)
         self.stick = wpilib.Joystick(0)
         self.climbingMotor = wpilib.Talon(2)
-        self.gearSwitch1 = wpilib.DigitalInput(0)
-        self.gearSwitch2 = wpilib.DigitalInput(1)
-        self.gearSwitch3 = wpilib.DigitalInput(2)
-        self.gearSwitch4 = wpilib.DigitalInput(3)
         self.ballSwitch1 = wpilib.DigitalInput(4)
         self.ballSwitch2 = wpilib.DigitalInput(5)
-        self.gearMotor1 = wpilib.Spark(4)
-        self.gearMotor2 = wpilib.Spark(3)
+        self.rightmandlible = Mandible( wpilib.Spark(2), wpilib.DigitalInput(0), wpilib.DigitalInput(1))
+        self.leftmandlible = Mandible( wpilib.Spark(3), wpilib.DigitalInput(2), wpilib.DigitalInput(3))
         self.ballMotor1 = wpilib.Relay(0)
         self.gyro = wpilib.ADXRS450_Gyro(0)
         self.gearSpeed = .5
@@ -84,24 +80,15 @@ class MyRobot(wpilib.IterativeRobot):
 
 
 
-        if self.stick.getRawButton(1) and self.gearSwitch2.get()== False:
-            self.gearMotor1.set(0)
-        elif self.stick.getRawButton(1) and self.gearSwitch2.get():
-            self.gearMotor1.set(.5)
-        elif self.stick.getRawButton(1) == False and self.gearSwitch1.get()== False:
-            self.gearMotor1.set(0)
-        elif self.stick.getRawButton(1) == False and self.gearSwitch1.get():
-            self.gearMotor1.set(-.5)
+        if self.stick.getRawButton(1):
+            self.rightmandible.open()
+            self.leftmandible.open()
+        else:
+            self.rightmandible.close()
+            self.leftmandible.close()
 
 
-        if self.stick.getRawButton(1) == False and self.gearSwitch3.get()== False:
-            self.gearMotor2.set(0)
-        elif self.stick.getRawButton(1) == False and self.gearSwitch3.get():
-            self.gearMotor2.set(.5)
-        elif self.stick.getRawButton(1) and self.gearSwitch4.get()== False:
-            self.gearMotor2.set(0)
-        elif self.stick.getRawButton(1) and self.gearSwitch4.get():
-            self.gearMotor2.set(-.5)
+  
 
         if self.stick.getRawButton(2) == False and self.ballSwitch1.get()==False:
             self.ballMotor1.set(wpilib.Relay.Value.kOff)
