@@ -7,7 +7,7 @@ from Actions import Mandible
 from Sensors import Ultrasonic
 from Sensors import Switch
 from Control import Toggle
-from Control import Logic
+#from Control import Logic
 import Auto
 
 class MyRobot(wpilib.IterativeRobot):
@@ -34,25 +34,15 @@ class MyRobot(wpilib.IterativeRobot):
         self.togglev = 0
         wpilib.CameraServer.launch()
         self.ultrasonic = wpilib.AnalogInput(0)
+        self.autoSchedule = Auto.Auto() 
 
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
-        self.auto_loop_counter = 0
-        autoPicker = self.table.getNumber('auto', 0)
-        if(autoPicker == 0):
-            routine = [Auto.Forward(ramp=Auto.ramp(), distance=5, steer=gyro, speed=0.8, chassis=self.robot_drive), Auto.Turn(steer=gyro, angle=90, chassis=self.robot_drive)]
-        elif(autoPicker == 1):
-            routine = [Auto.Turn]
-
+        self.autoSchedule.addActions([])
+        
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
-        for i in auto_loop_counter:
-            finishFlag = routine[i].update()
-            if(finshFlag == 1):
-                auto_loop_counter.add(i+1)
-                auto_loop_counter.remove(i)
-            if(finishFlag == 2):
-                auto_loop_counter.add(i+1)
+        self.autoSchedule.update()
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
