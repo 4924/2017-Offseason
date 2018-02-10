@@ -83,17 +83,17 @@ class Dump:
         self.x = 0
         
     def update(self, switch1, switch2, relay):
-        if self.x = 0 and self.switch1 != self.defaultSwitch1:
+        if self.x == 0 and self.switch1 != self.defaultSwitch1:
             self.relay.set(0)
-        elif self.x = 0 and self.switch1 == self.defaultSwitch1:
+        elif self.x == 0 and self.switch1 == self.defaultSwitch1:
             if openDir == True:
                 self.relay.set(3)
             else:
                 self.relay.set(2)
-        elif self.x = 1 and self.switch2 != self.defaultSwitch2:
+        elif self.x == 1 and self.switch2 != self.defaultSwitch2:
             self.relay.set(0)
-        elif self.x = 1 and self.switch2 == self.defaultSwitch2:
-            if openDir = False
+        elif self.x == 1 and self.switch2 == self.defaultSwitch2:
+            if openDir == False:
                 self.relay.set(2)
             else:
                 self.relay.set(3)
@@ -106,5 +106,5 @@ class Dump:
         elif self.switch2 == self.defaultSwitch2 and self.x == 0:
             return 2
         elif self.switch2 !=  self.defaultSwitch2 and self.x == 0:
-            return 0   n 
+            return 0 
             

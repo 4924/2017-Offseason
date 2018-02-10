@@ -32,5 +32,4 @@ def test_Drive(robot_path, wpilib, hal_data):
     assert drive_base.y==-1
 
     drive_base.update()
-    assert hal_data['pwm'][8]['value'] ==
      
