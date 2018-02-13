@@ -38,7 +38,7 @@ class MyRobot(wpilib.IterativeRobot):
         #wpilib.CameraServer.launch()
         self.ultrasonic = wpilib.AnalogInput(0)
         self.autoSchedule = Auto.Auto() 
-
+        self.elevatorMotor = wpilib.Talon(1)
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.ahrs.reset()
@@ -92,8 +92,14 @@ class MyRobot(wpilib.IterativeRobot):
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
         self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
-
-
+        if self.stick.getRawButton(5):
+                self.elevatorMotor.set(0.5)  #make go uppy 
+        elif self.stick.getRawButton(6):
+                self.elevatorMotor.set(-0.5) #make go downy
+        else:
+                self.elevatorMotor.set(0)
+        
+        
 #        if self.stick.getRawButton(1):
 #            self.rightmandible.open()
 #            self.leftmandible.open()
