@@ -106,6 +106,13 @@ class MyRobot(wpilib.IterativeRobot):
         """This function is called periodically during operator control."""
         self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
 
+        if self.stick.getRawButton(5):
+            self.elevatorMotor.set(0.5)  #make go up
+        elif self.stick.getRawButton(6):
+            self.elevatorMotor.set(-0.5) #make go down
+        else:
+            self.elevatorMotor.set(0) #make stop
+
 
 #        if self.stick.getRawButton(1):
 #            self.rightmandible.open()
