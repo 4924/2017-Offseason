@@ -38,48 +38,61 @@ class MyRobot(wpilib.IterativeRobot):
         #wpilib.CameraServer.launch()
         self.ultrasonic = wpilib.AnalogInput(0)
         self.autoSchedule = Auto.Auto() 
-        self.elevatorMotor = wpilib.Talon(1)
+
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.ahrs.reset()
         autoPicker = self.table.getNumber('auto', 0)
         config = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         if autoPicker == 0:
-            #starting from center go to the left of the scale
+            #starting from center go to the left of the switch
             if config[0] == 'L' :
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 510, 0), Auto.Turn(self.ahrs, self.robot_drive, -90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 650, -90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 798, 0)])
-            #starting from center go to right of the scale
+            #starting from center go to right of the switch
             else:
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 510, 0), Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 530, 90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 798, 0)])
+        #Still from center postition
         if autoPicker == 1:
+            #If you want to just pass the auto line
+            #Turn 90 degrees, drive forward 170 inches at 90 degrees, turn -90 degrees, drive forward 125 inches at 0 degrees
             self.autoSchedule.addActions([Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1700, 90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
         #starting in left position
         elif autoPicker == 2:
             #If scale is on the left and switch is not, go to scale
             if config[0] == 'R' and config[1] == 'L':
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 0), Auto.Turn(self.ahrs, self.robot_drive, -15), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, -15), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 2160, 0),Auto.Turn(self.ahrs, self.robot_drive, 90)])
             #If switch is on the left and scale is not, go to switch
             elif config[0] == 'L' and config[1] == 'R':
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 0), Auto.Turn(self.ahrs, self.robot_drive, -15), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, -15), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 240, 0), Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 240, 90)])
             #If sacle and switch are on the left, go to scale
             elif config[0] == 'L' and config[1] == 'L':
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 0), Auto.Turn(self.ahrs, self.robot_drive, -15), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, -15), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 2160, 0),Auto.Turn(self.ahrs, self.robot_drive, 90)])
             #If neither are on the left, pass the auto line
             else:
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
         #starting form right
         elif autoPicker == 3:
             #If scale is on the right and switch is not, go to scale
             if config[0] == 'L' and config[1] == 'R':
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 0), Auto.Turn(self.ahrs, self.robot_drive, 15), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 15), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 2160, 0),Auto.Turn(self.ahrs, self.robot_drive, -90)])
             #If switch is on the right and scale is not, go to switch
             elif config[0] == 'R' and config[1] == 'L':
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 0), Auto.Turn(self.ahrs, self.robot_drive, 15), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 15), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 240, 0), Auto.Turn(self.ahrs, self.robot_drive, -90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 240, -90)])
             #If sacle and switch are on the right, go to scale
             elif config[0] == 'R' and config[1] == 'R':
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 0), Auto.Turn(self.ahrs, self.robot_drive, 15), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 15), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 2160, 0),Auto.Turn(self.ahrs, self.robot_drive, -90)])
             #If neither are on the right, pass the auto line
             else:
+                #
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
 
     def autonomousPeriodic(self):
@@ -92,14 +105,8 @@ class MyRobot(wpilib.IterativeRobot):
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
         self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
-        if self.stick.getRawButton(5):
-                self.elevatorMotor.set(0.5)  #make go uppy 
-        elif self.stick.getRawButton(6):
-                self.elevatorMotor.set(-0.5) #make go downy
-        else:
-                self.elevatorMotor.set(0)
-        
-        
+
+
 #        if self.stick.getRawButton(1):
 #            self.rightmandible.open()
 #            self.leftmandible.open()
