@@ -104,7 +104,7 @@ class MyRobot(wpilib.IterativeRobot):
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
-        self.robot_drive.arcadeDrive(self.stick.getY(), self.stick.getX())
+        self.robot_drive.arcadeDrive(-self.stick.getY(), self.stick.getX())
 
         if self.stick.getRawButton(5):
             self.elevatorMotor.set(0.5)  #make go up
@@ -114,12 +114,11 @@ class MyRobot(wpilib.IterativeRobot):
             self.elevatorMotor.set(0) #make stop
 
 
-#        if self.stick.getRawButton(1):
-#            self.rightmandible.open()
-#            self.leftmandible.open()
-#        else:
-#            self.rightmandible.close()
-#            self.leftmandible.close()
+            
+        self.intakemotorright.set(self.stick.getRawAxis(5) + self.stick.getRawAxis(4))
+        self.intakemotorleft.set(-self.stick.getRawAxis(5) + self.stick.getRawAxis(4))
+
+
 
 
         self.table.putNumber('encodeD', self.wheel.getDistance())

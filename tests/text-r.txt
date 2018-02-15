@@ -1,4 +1,0 @@
-pytest>=2.8
-pyfrc
-wpilib
-pycodestyle 
