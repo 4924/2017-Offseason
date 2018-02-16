@@ -10,6 +10,7 @@ from Control import Toggle
 from robotpy_ext.common_drivers.navx import AHRS
 #from Control import Logic
 import Auto
+import math
 
 class MyRobot(wpilib.IterativeRobot):
     def robotInit(self):
@@ -105,22 +106,26 @@ class MyRobot(wpilib.IterativeRobot):
         self.robot_drive.arcadeDrive(-self.stick.getY(), self.stick.getX())
 
         if self.stick.getRawButton(5):
-            self.elevatorMotor.set(0.2)  #make go up
+            self.elevatorMotor.set(0.6)  #make go up
         elif self.stick.getRawButton(6):
-            self.elevatorMotor.set(-0.2) #make go down
+            self.elevatorMotor.set(-0.6) #make go down
         else:
             self.elevatorMotor.set(0) #make stop
 
 
-        if self.stick.getRawButton(7):
-            self.elevatorMotor.set(0.2)  #make go up
+        if self.stick.getRawButton(1):
+            self.intakemotor.set(0.6)  #make go up
+        elif self.stick.getRawButton(2):
+            self.intakemotor.set(-0.6)  #make go up
         else:
-            self.elevatorMotor.set(0) #make stop
+            self.intakemotor.set(0) #make stop
 
-
-            
-        self.intakemotorright.set(self.stick.getRawAxis(5) + self.stick.getRawAxis(4))
-        self.intakemotorleft.set(-self.stick.getRawAxis(5) + self.stick.getRawAxis(4))
+        leftValue = self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
+        if  abs(leftValue) > .3: self.intakemotorleft.set(leftValue)
+        else: self.intakemotorleft.set(0)
+        rightValue = -self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
+        if abs(rightValue) > .3: self.intakemotorright.set(rightValue)
+        else: self.intakemotorright.set(0)
 
 
 
