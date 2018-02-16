@@ -20,12 +20,10 @@ class MyRobot(wpilib.IterativeRobot):
         self.table = NetworkTables.getTable("SmartDashboard")
         self.robot_drive = wpilib.drive.DifferentialDrive(wpilib.Spark(0), wpilib.Spark(1))
         self.stick = wpilib.Joystick(0)
-        #self.climbingMotor = wpilib.Talon(2)
-        #self.ballSwitch1 = wpilib.DigitalInput(4)
-        #self.ballSwitch2 = wpilib.DigitalInput(5)
-        #self.rightmandlible = Mandible( wpilib.Spark(2), wpilib.DigitalInput(0), wpilib.DigitalInput(1))
-        #self.leftmandlible = Mandible( wpilib.Spark(3), wpilib.DigitalInput(2), wpilib.DigitalInput(3))
-        #self.ballMotor1 = wpilib.Relay(0)
+        self.elevatorMotor = wpilib.VictorSP(6)
+        self.intakemotor = wpilib.VictorSP(3)
+        self.intakemotorleft = wpilib.VictorSP(4)
+        self.intakemotorright = wpilib.VictorSP(5)
         self.ahrs = AHRS.create_i2c(0)
         #self.gearSpeed = .5
         #self.lights = wpilib.Relay(1)
@@ -107,9 +105,15 @@ class MyRobot(wpilib.IterativeRobot):
         self.robot_drive.arcadeDrive(-self.stick.getY(), self.stick.getX())
 
         if self.stick.getRawButton(5):
-            self.elevatorMotor.set(0.5)  #make go up
+            self.elevatorMotor.set(0.2)  #make go up
         elif self.stick.getRawButton(6):
-            self.elevatorMotor.set(-0.5) #make go down
+            self.elevatorMotor.set(-0.2) #make go down
+        else:
+            self.elevatorMotor.set(0) #make stop
+
+
+        if self.stick.getRawButton(7):
+            self.elevatorMotor.set(0.2)  #make go up
         else:
             self.elevatorMotor.set(0) #make stop
 
