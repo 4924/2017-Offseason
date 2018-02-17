@@ -37,19 +37,19 @@ class MyRobot(wpilib.IterativeRobot):
         #wpilib.CameraServer.launch()
         self.ultrasonic = wpilib.AnalogInput(0)
         self.autoSchedule = Auto.Auto() 
-        chooser = wpilib.SendableChooser()
-        chooser.addObject('Start Pos 2', '0')
-        chooser.addObject('Start Pos 2', '1')
-        chooser.addObject('Start Pos 1', '2')
-        chooser.addObject('Start Pos 3', '3')
+        self.chooser = wpilib.SendableChooser()
+        self.chooser.addObject('Start Pos 2', '0')
+        self.chooser.addObject('Start Pos 2', '1')
+        self.chooser.addObject('Start Pos 1', '2')
+        self.chooser.addObject('Start Pos 3', '3')
         self.intakeToggle = False
-        self.intakePos = closed
+        self.intakePos = False
         
 
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.ahrs.reset()
-        autoPicker = chooser.getSelected()
+        autoPicker = 2
         config = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         if autoPicker == 0:
             #starting from center go to the left of the switch
@@ -74,7 +74,7 @@ class MyRobot(wpilib.IterativeRobot):
             #If switch is on the left and scale is not, go to switch
             elif config[0] == 'L' and config[1] == 'R':
                 #drive forward 60 inches at 0 dgrees, turn -15 degrees, drive forward 60 inches at -15 degrees, turn 15 degrees, drive forward 24 inches at 0 degrees, turn 90 degrees, drive forward 24 inches at 90 degrees
-                self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, 0), Auto.Turn(self.ahrs, self.robot_drive, -15), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 600, -15), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 240, 0), Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 240, 90)])
+                self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1700, 0), Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 165, 90)])
             #If sacle and switch are on the left, go to scale
             elif config[0] == 'L' and config[1] == 'L':
                 #drive forward 60 inches at 0 degrees, turn -15 degrees, drive forward 60 inches at -15 degrees, turn 15 degrees, drive forward 216 inches at 0 degrees, turn 90 degrees
@@ -126,9 +126,9 @@ class MyRobot(wpilib.IterativeRobot):
         self.intakeToggle = self.stick.getRawButton(1)
             
         if self.intakePos:
-        	self.intakemotor.set(.6)
+        	self.intakeMotor.set(.6)
         else:
-        	self.intakemotor.set(-.6)
+        	self.intakeMotor.set(-.6)
 
         leftValue = self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
         if  abs(leftValue) > .3: self.intakeMotorLeft.set(leftValue)

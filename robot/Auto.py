@@ -10,8 +10,8 @@ class Forward:
         self.encoder = encoder
         self.angle = angle
         self.chassis = chassis
-        self.kP = 0.001
-        self.kI = 0.0008
+        self.kP = 0.0005
+        self.kI = 0.001
         self.kD = 0.00
         self.kF = 0.00
         self.aP = 0.08
