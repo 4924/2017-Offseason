@@ -37,11 +37,16 @@ class MyRobot(wpilib.IterativeRobot):
         #wpilib.CameraServer.launch()
         self.ultrasonic = wpilib.AnalogInput(0)
         self.autoSchedule = Auto.Auto() 
+        chooser = wpilib.SendableChooser()
+        chooser.addObject('Start Pos 2', '0')
+        chooser.addObject('Start Pos 2', '1')
+        chooser.addObject('Start Pos 1', '2')
+        chooser.addObject('Start Pos 3', '3')
 
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.ahrs.reset()
-        autoPicker = self.table.getNumber('auto', 0)
+        autoPicker = chooser.getSelected()
         config = wpilib.DriverStation.getInstance().getGameSpecificMessage()
         if autoPicker == 0:
             #starting from center go to the left of the switch
@@ -53,7 +58,7 @@ class MyRobot(wpilib.IterativeRobot):
                 #Drive forward 51 inches at 0 degrees, Turn 90 degrees, drive forward 65 inches at 90 degrees, turn -90 degrees, drive forward 79.8 inches at 0 degrees
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 510, 0), Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 530, 90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 798, 0)])
         #Still from center postition
-        if autoPicker == 1:
+        elif autoPicker == 1:
             #If you want to just pass the auto line
             #Turn 90 degrees, drive forward 170 inches at 90 degrees, turn -90 degrees, drive forward 125 inches at 0 degrees
             self.autoSchedule.addActions([Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1700, 90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
