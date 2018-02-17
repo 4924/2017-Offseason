@@ -22,9 +22,9 @@ class MyRobot(wpilib.IterativeRobot):
         self.robot_drive = wpilib.drive.DifferentialDrive(wpilib.Spark(0), wpilib.Spark(1))
         self.stick = wpilib.Joystick(0)
         self.elevatorMotor = wpilib.VictorSP(6)
-        self.intakemotor = wpilib.VictorSP(3)
-        self.intakemotorleft = wpilib.VictorSP(4)
-        self.intakemotorright = wpilib.VictorSP(5)
+        self.intakeMotor = wpilib.VictorSP(3)
+        self.intakeMotorLeft = wpilib.VictorSP(4)
+        self.intakeMotorRight = wpilib.VictorSP(5)
         self.ahrs = AHRS.create_i2c(0)
         #self.gearSpeed = .5
         #self.lights = wpilib.Relay(1)
@@ -42,6 +42,9 @@ class MyRobot(wpilib.IterativeRobot):
         chooser.addObject('Start Pos 2', '1')
         chooser.addObject('Start Pos 1', '2')
         chooser.addObject('Start Pos 3', '3')
+        self.intakeToggle = False
+        self.intakePos = closed
+        
 
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
@@ -117,20 +120,22 @@ class MyRobot(wpilib.IterativeRobot):
         else:
             self.elevatorMotor.set(0) #make stop
 
+        if self.stick.getRawButton(1) and not self.intakeToggle:
+            self.intakePos = not self.intakePos
 
-        if self.stick.getRawButton(1):
-            self.intakemotor.set(0.6)  #intake
-        elif self.stick.getRawButton(2):
-            self.intakemotor.set(-0.6)  #output
+        self.intakeToggle = self.stick.getRawButton(1)
+            
+        if self.intakePos:
+        	self.intakemotor.set(.6)
         else:
-            self.intakemotor.set(0) #stop
+        	self.intakemotor.set(-.6)
 
         leftValue = self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
-        if  abs(leftValue) > .3: self.intakemotorleft.set(leftValue)
-        else: self.intakemotorleft.set(0)
+        if  abs(leftValue) > .3: self.intakeMotorLeft.set(leftValue)
+        else: self.intakeMotorLeft.set(0)
         rightValue = -self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
-        if abs(rightValue) > .3: self.intakemotorright.set(rightValue)
-        else: self.intakemotorright.set(0)
+        if abs(rightValue) > .3: self.intakeMotorRight.set(rightValue)
+        else: self.intakeMotorRight.set(0)
 
 
 
