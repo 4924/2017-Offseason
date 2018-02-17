@@ -44,7 +44,8 @@ class MyRobot(wpilib.IterativeRobot):
         self.chooser.addObject('Start Pos 3', '3')
         self.intakeToggle = False
         self.intakePos = False
-        
+        self.openSwitch = wpilib.DigitalInput(7)
+        self.closedSwitch = wpilib.DigitalInput(8)
 
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
@@ -126,9 +127,24 @@ class MyRobot(wpilib.IterativeRobot):
         self.intakeToggle = self.stick.getRawButton(1)
             
         if self.intakePos:
+<<<<<<< HEAD
         	self.intakeMotor.set(.6)
         else:
         	self.intakeMotor.set(-.6)
+=======
+        	if not self.openSwitch.get():
+        		self.intakeMotor.set(.6)
+        	else:
+        		self.intakeMotor.set(0)
+     
+        else:
+        	if not self.closedSwitch.get():
+        		self.intakeMotor.set(-.6)
+        	else:
+        		self.intakeMotor.set(0)
+
+
+>>>>>>> refs/remotes/origin/master
 
         leftValue = self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
         if  abs(leftValue) > .3: self.intakeMotorLeft.set(leftValue)
