@@ -37,6 +37,7 @@ class MyRobot(wpilib.IterativeRobot):
         #wpilib.CameraServer.launch()
         self.ultrasonic = wpilib.AnalogInput(0)
         self.autoSchedule = Auto.Auto() 
+	self.timer= wpilib.Timer()
         chooser = wpilib.SendableChooser()
         chooser.addObject('Start Pos 2', '0')
         chooser.addObject('Start Pos 2', '1')
@@ -106,6 +107,9 @@ class MyRobot(wpilib.IterativeRobot):
         self.table.putNumber('encodeD2', self.wheel2.getDistance())
         self.table.putNumber('nav', self.ahrs.getYaw())
 
+    def teleopInit(self):
+	self.timer.start()
+
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
         self.robot_drive.arcadeDrive(-self.stick.getY(), self.stick.getX())
@@ -125,14 +129,9 @@ class MyRobot(wpilib.IterativeRobot):
         else:
             self.intakemotor.set(0) #stop
 
-        leftValue = self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
-        if  abs(leftValue) > .3: self.intakemotorleft.set(leftValue)
-        else: self.intakemotorleft.set(0)
-        rightValue = -self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
-        if abs(rightValue) > .3: self.intakemotorright.set(rightValue)
-        else: self.intakemotorright.set(0)
-
-
+	if self.stick.getRawButton(7):
+	    self.intakemotorleft.set(math.sin(self.timer.get())/2+0.5)
+	    self.intakemotorright.set(math.cosin(self.timer.get())/2-0.5)
 
 
         self.table.putNumber('encodeD', self.wheel.getDistance())
