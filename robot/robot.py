@@ -119,11 +119,11 @@ class MyRobot(wpilib.IterativeRobot):
 
 
         if self.stick.getRawButton(1):
-            self.intakemotor.set(0.6)  #make go up
+            self.intakemotor.set(0.6)  #intake
         elif self.stick.getRawButton(2):
-            self.intakemotor.set(-0.6)  #make go up
+            self.intakemotor.set(-0.6)  #output
         else:
-            self.intakemotor.set(0) #make stop
+            self.intakemotor.set(0) #stop
 
         leftValue = self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
         if  abs(leftValue) > .3: self.intakemotorleft.set(leftValue)
