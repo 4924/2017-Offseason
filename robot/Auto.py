@@ -37,7 +37,7 @@ class Forward:
         self.fwdController.setAbsoluteTolerance(self.kToleranceDegrees)
         self.fwdController.setContinuous(True)
 
-        self.turnController = wpilib.PIDController(self.aP, self.aI, self.aD, self.aF, self.navX, self.turnWrite)
+        self.turnController = wpilib.PIDController(self.aP, self.aI, self.aD, self.aF, navXPID(self.navX), self.turnWrite)
         self.turnController.setInputRange(-180.0,  180.0)
         self.turnController.setOutputRange(-0.4, 0.4)
         self.turnController.setAbsoluteTolerance(self.aToleranceDegrees)
@@ -100,6 +100,13 @@ class pidWriteObject:
     def pidWrite(self, output):
         self.value = output
 
+class navXPID:
+    def __init__(self, nav):
+        self.nav = nav
+
+    def pidRead(self):
+        return self.nav.getRoll()
+
 class Distance:
     """This class calculates how fast the robot should be going"""
     
@@ -155,7 +162,7 @@ class Turn:
         self.tm.start()
         self.firstTime = True
 
-        self.turnController = wpilib.PIDController(self.aP, self.aI, self.aD, self.aF, self.navX, self.turnWrite)
+        self.turnController = wpilib.PIDController(self.aP, self.aI, self.aD, self.aF, navXPID(self.navX), self.turnWrite)
         self.turnController.setInputRange(-180.0,  180.0)
         self.turnController.setOutputRange(-0.4, 0.4)
         self.turnController.setAbsoluteTolerance(self.aToleranceDegrees)
@@ -175,3 +182,18 @@ class Turn:
             return 1
         else:
             return 0
+
+class Elevator:
+    def __init__(self, elevatorMotor, time):
+        self.elevatorMotor = elevatorMotor
+        self.tm = wpilib.Timer()
+        self.tm.start()
+        self.firstTime = True
+
+    def update(self):
+        if self.firstTime:
+            self.firstTime = False
+            self.elevatorMotor.set(-1)
+            self.start_time = self.tm.getMsClock()
+
+        return 2         
