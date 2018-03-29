@@ -197,3 +197,16 @@ class Elevator:
             self.start_time = self.tm.getMsClock()
 
         return 2         
+
+class Intake:
+    def __init__(self, intakeMotor, time):
+        self.intakeMotor = intakeMotor
+        self.tm = wpilib.Timer()
+        self.tm.start()
+        self.firstTime = True
+
+    def update(self):
+        if self.firstTime:
+            self.firstTime = False
+            self.intakeMotor.set(.8)
+            self.start_time = self.tm.getMsClock()
