@@ -184,7 +184,9 @@ class Turn:
             return 0
 
 class Elevator:
-    def __init__(self, elevatorMotor, time):
+    def __init__(self, elevatorMotor, time, speed = -1):
+        self.time = time
+        self.speed = speed
         self.elevatorMotor = elevatorMotor
         self.tm = wpilib.Timer()
         self.tm.start()
@@ -193,13 +195,21 @@ class Elevator:
     def update(self):
         if self.firstTime:
             self.firstTime = False
-            self.elevatorMotor.set(-1)
+            self.elevatorMotor.set(self.speed)
             self.start_time = self.tm.getMsClock()
 
-        return 2         
+        if self.tm.getMsClock() - self.start_time < self.time:
+            self.elevatorMotor.set(self.speed)
+
+        if self.tm.getMsClock() - self.start_time > self.time:
+            return 1
+
+        return 2
 
 class Intake:
-    def __init__(self, intakeMotor, time):
+    def __init__(self, intakeMotor, time, speed = .8):
+        self.time = time
+        self.speed = speed
         self.intakeMotor = intakeMotor
         self.tm = wpilib.Timer()
         self.tm.start()
@@ -208,5 +218,13 @@ class Intake:
     def update(self):
         if self.firstTime:
             self.firstTime = False
-            self.intakeMotor.set(.8)
+            self.intakeMotor.set(self.speed)
             self.start_time = self.tm.getMsClock()
+
+        if self.tm.getMsClock() - self.start_time < self.time:
+            self.intakeMotor.set(self.speed)
+
+        if self.tm.getMsClock() - self.start_time > self.time:
+            return 1
+
+        return 2
