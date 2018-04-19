@@ -67,8 +67,10 @@ class Forward:
 
 class Auto:
     """Scheduler for autonomous actions"""
-    def __init__(self):
+    def __init__(self, actions):
         self.done = False
+        self.actions = actions
+
 
     def addActions(self, actions):
         """Adds a list of actions to the queue"""

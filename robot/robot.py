@@ -9,7 +9,7 @@ import Sensors
 from Control import Toggle
 from robotpy_ext.common_drivers.navx import AHRS
 #from Control import Logic
-#import Auto
+import Auto
 import math
 
 class MyRobot(wpilib.IterativeRobot):
@@ -18,6 +18,7 @@ class MyRobot(wpilib.IterativeRobot):
         This function is called upon program startup and
         should be used for any initialization code.
         """
+
         self.table = NetworkTables.getTable("SmartDashboard")
         self.robot_drive = wpilib.drive.DifferentialDrive(wpilib.Spark(0), wpilib.Spark(1))
         self.stick = wpilib.Joystick(0)
@@ -40,7 +41,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.encoder = Sensors.Encode(self.wheel, self.wheel2)
         #wpilib.CameraServer.launch()
         self.ultrasonic = wpilib.AnalogInput(0)
-        #self.autoSchedule = Auto.Auto() 
+        self.autoSchedule = Auto.Auto()
         self.intakeToggle = False
         self.intakePos = False
         self.openSwitch = wpilib.DigitalInput(9)
@@ -50,14 +51,18 @@ class MyRobot(wpilib.IterativeRobot):
         self.speedToggle = False
 
     def autonomousInit(self):
-    	self.counter = 0
+        self.counter = 0
 
-    	"""This function is run once each time the robot enters autonomous mode."""
-    	self.ahrs.reset()
-    	autoPicker = self.table.getNumber('auto')
-    	config = wpilib.DriverStation.getInstance().getGameSpecificMessage()
-    	if autoPicker == 0:
-    	#starting from center go to the left of the switch
+        """This function is run once each time the robot enters autonomous mode."""
+        self.ahrs.reset()
+        autoPicker = self.table.getNumber('auto', 'defaultValue')
+        config = wpilib.DriverStation.getInstance().getGameSpecificMessage()
+        while len(config) < 3:
+            config = wpilib.DriverStation.getInstance().getGameSpecificMessage()
+        if self.speed == .7:
+        	self.robot_drive.arcadeDrive(-0.6, 0.6)
+        if autoPicker == 0:
+        #starting from center go to the left of the switch
             if config[0] == 'L' :
                 #Drive forward 51 inches at 0 degrees, Turn -90 degrees, drive forward 65 inches at -90 degrees, turn 90 degrees, drive forward 79.8 inches at 0 degrees
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 510, 0), Auto.Turn(self.ahrs, self.robot_drive, -90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 650, -90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Elevator(self.elevatorMotor, 100), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 798, 0), Auto.Intake(self.intakeMotor, 100)])
@@ -66,12 +71,12 @@ class MyRobot(wpilib.IterativeRobot):
                 #Drive forward 51 inches at 0 degrees, Turn 90 degrees, drive forward 65 inches at 90 degrees, turn -90 degrees, drive forward 79.8 inches at 0 degrees
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 510, 0), Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 530, 90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Elevator(self.elevatorMotor, 100), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 798, 0), Auto.Intake(self.intakeMotor, 100)])
         #Still from center postition
-    	elif autoPicker == 1:
+        elif autoPicker == 1:
             #If you want to just pass the auto line
             #Turn 90 degrees, drive forward 170 inches at 90 degrees, turn -90 degrees, drive forward 125 inches at 0 degrees
             self.autoSchedule.addActions([Auto.Turn(self.ahrs, self.robot_drive, 90), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1700, 90), Auto.Turn(self.ahrs, self.robot_drive, 0), Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
         #starting in left position
-    	elif autoPicker == 2:
+        elif autoPicker == 2:
             #If scale is on the left and switch is not, go to scale
             if config[0] == 'R' and config[1] == 'L':
                 #drive forward 60 inches at 0 degrees, turn -15 degrees, drive forward 60 inches at -15 degrees, turn 15 degrees, drive forward 216 inches at 0 degrees, turn 90 degrees
@@ -87,9 +92,10 @@ class MyRobot(wpilib.IterativeRobot):
             #If neither are on the left, pass the auto line
             else:
                 #drive forward 125 inches at 0 degrees
+                print("it worked")
                 self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
         #starting from right
-    	elif autoPicker == 3:
+        elif autoPicker == 3:
             #If scale is on the right and switch is not, go to scale
             if config[0] == 'L' and config[1] == 'R':
                 #drive forward 60 inches at 0 degrees, turn 15 degrees, drive forward 60 inches at 15 degrees, turn -15 degrees, drive forward 216 inches at 0 degrees, turn -90 degrees
@@ -105,22 +111,23 @@ class MyRobot(wpilib.IterativeRobot):
             #If neither are on the right, pass the auto line
             else:
                 #drive forward 125 inches at 0 degrees
-                #self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
-                self.autoSchedule.addActions([Auto.Intake(self.intakeMotor, 100)])
+                self.autoSchedule.addActions([Auto.Forward(300, 20, self.ahrs, self.encoder, self.robot_drive, 1250, 0)])
 
     def autonomousPeriodic(self):
-
-        if self.counter == 0:
-        	value = chooser.getSelected()
+        print('hello')
+        #if self.counter == 0:
+            #self.counter = 1
+        #else:
+            #value = chooser.getSelected()
         #"""This function is called periodically during autonomous."""
-        #self.autoSchedule.update()
-        #self.table.putNumber('encodeD', self.wheel.getDistance())
-        #self.table.putNumber('encodeD2', self.wheel2.getDistance())
-        #self.table.putNumber('nav', self.ahrs.getYaw())
-        self.counter += 1
+        self.autoSchedule.update()
+        self.table.putNumber('encodeD', self.wheel.getDistance())
+        self.table.putNumber('encodeD2', self.wheel2.getDistance())
+        self.table.putNumber('nav', self.ahrs.getYaw())
+        #self.counter += 1
 
-        if  self.counter < 200:
-        	self.robot_drive.arcadeDrive(-.55, 0)
+        #if  self.counter < 200:
+            #self.robot_drive.arcadeDrive(-.55, 0)
 
 
     def teleopPeriodic(self):
@@ -163,9 +170,6 @@ class MyRobot(wpilib.IterativeRobot):
         #rightValue = self.stick.getRawAxis(5) - self.stick.getRawAxis(4)
         #if abs(rightValue) > .3: self.intakeMotorRight.set(rightValue)
         #else: self.intakeMotorRight.set(0)
-
-
-
 
         self.table.putNumber('encodeD', self.wheel.getDistance())
         self.table.putNumber('encodeD2', self.wheel2.getDistance())
