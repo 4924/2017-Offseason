@@ -70,7 +70,7 @@ class Auto:
     def __init__(self, actions):
         self.done = False
         self.actions = actions
-
+        self.autoUpdateCounter = [0]
 
     def addActions(self, actions):
         """Adds a list of actions to the queue"""
