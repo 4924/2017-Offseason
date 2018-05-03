@@ -11,7 +11,6 @@ from robotpy_ext.common_drivers.navx import AHRS
 #from Control import Logic
 import Auto
 import math
-from RobotMap import RobotMap
 from wpilib.doublesolenoid import DoubleSolenoid
 
 class MyRobot(wpilib.IterativeRobot):
