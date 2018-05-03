@@ -11,6 +11,8 @@ from robotpy_ext.common_drivers.navx import AHRS
 #from Control import Logic
 import Auto
 import math
+from RobotMap import RobotMap
+from wpilib.doublesolenoid import DoubleSolenoid
 
 class MyRobot(wpilib.IterativeRobot):
     def robotInit(self):
@@ -38,6 +40,15 @@ class MyRobot(wpilib.IterativeRobot):
         self.robot_drive.setSafetyEnabled(False)
 
         wpilib.CameraServer.launch()
+        self.xb = wpilib.Joystick(1)
+        
+        self.Compressor = wpilib.Compressor(0)
+        self.Compressor.setClosedLoopControl(True)
+        self.enabled = self.Compressor.enabled()
+        self.PSV = self.Compressor.getPressureSwitchValue()
+        self.LeftSolenoid = wpilib.DoubleSolenoid(0,1)
+        self.RightSolenoid = wpilib.DoubleSolenoid(2,3)
+        self.Compressor.start()
 
         self.wheel = wpilib.Encoder(0, 1)
         self.wheel2 = wpilib.Encoder(2, 3, True)
@@ -53,7 +64,7 @@ class MyRobot(wpilib.IterativeRobot):
         self.speed = 0.6
         self.leftSpeed = 0.7
         self.rightSpeed = 0.7
-        self.speedToggle = False
+        self.speedToggle = False 
 
 
 
@@ -197,6 +208,13 @@ class MyRobot(wpilib.IterativeRobot):
         rightValue = -self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
         if abs(rightValue) > .3: self.intakeMotorRight.set(rightValue)
         else: self.intakeMotorRight.set(0)
+
+        if(self.xb.getRawButton(7)):
+                self.LeftSolenoid.set(DoubleSolenoid.Value.kForward)
+                self.RightSolenoid.set(DoubleSolenoid.Value.kForward)
+        elif(self.xb.getRawButton(8)):
+                self.LeftSolenoid.set(DoubleSolenoid.Value.kReverse)
+                self.RightSolenoid.set(DoubleSolenoid.Value.kReverse)
 
         self.table.putNumber('encodeD', self.wheel.getDistance())
         self.table.putNumber('encodeD2', self.wheel2.getDistance())
