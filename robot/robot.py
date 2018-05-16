@@ -159,19 +159,21 @@ class MyRobot(wpilib.IterativeRobot):
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
-        #self.robot_drive.arcadeDrive(-self.speed*self.stick.getRawAxis(1), self.speed*self.stick.getRawAxis(0))
-        self.speed = 0.6 + (self.stick.getRawAxis(3) / 2)
 
-        """Tank Drive"""
-        self.leftSpeed = -0.7 * self.stick.getRawAxis(1)
-        self.rightSpeed = -0.7 * self.stick.getRawAxis(5)
+        if self.stick.getRawAxis(2) < 0.2:
+            self.robot_drive.arcadeDrive(-self.speed*self.stick.getRawAxis(1), self.speed*self.stick.getRawAxis(0))
+            self.speed = 0.6 + (self.stick.getRawAxis(3) / 2)
+        elif self.stick.getRawAxis(2) > 0.2:
+            """Tank Drive"""
+            self.leftSpeed = -0.7 * self.stick.getRawAxis(1)
+            self.rightSpeed = -0.7 * self.stick.getRawAxis(5)
         
-        self.robot_drive.tankDrive(self.leftSpeed, self.rightSpeed)
+            self.robot_drive.tankDrive(self.leftSpeed, self.rightSpeed)
 
-        if self.stick.getRawButton(6) == 1:
-        	self.robot_drive.tankDrive(0.7, -0.7)
-        elif self.stick.getRawButton(5) == 1:
-        	self.robot_drive.tankDrive(-0.7, 0.7)
+            if self.stick.getRawButton(6) == 1:
+        	    self.robot_drive.tankDrive(0.7, -0.7)
+            elif self.stick.getRawButton(5) == 1:
+        	    self.robot_drive.tankDrive(-0.7, 0.7)
 
 
 
@@ -193,7 +195,10 @@ class MyRobot(wpilib.IterativeRobot):
         else:
             self.climbMotor.set(0) #make stop
 
-        if self.stick.getRawButton(1) and not self.intakeToggle:
+#Intake
+
+        
+        '''if self.stick.getRawButton(1) and not self.intakeToggle:
             self.intakePos = not self.intakePos
             
         if self.stick.getRawButton(1):
@@ -206,7 +211,7 @@ class MyRobot(wpilib.IterativeRobot):
         else: self.intakeMotorLeft.set(0)
         rightValue = -self.stick.getRawAxis(5) + self.stick.getRawAxis(4)
         if abs(rightValue) > .3: self.intakeMotorRight.set(rightValue)
-        else: self.intakeMotorRight.set(0)
+        else: self.intakeMotorRight.set(0)'''
 
         if(self.xb.getRawButton(7)):
                 self.LeftSolenoid.set(DoubleSolenoid.Value.kForward)
